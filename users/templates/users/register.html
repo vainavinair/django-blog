@@ -1,0 +1,31 @@
+{% extends 'blog_home/base.html' %}
+{% csrf_token %}
+{% block content %}
+{% load widget_tweaks %}
+<form method="post" class="m-3">
+    
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    <center>
+        <legend>Create an Account</legend>
+        <div class="form-group col-md-5">
+            {% for field in form.visible_fields %}
+
+            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+            {% render_field field class="form-control" %}
+            {% for error in field.errors %}
+            <p class="help-block text-danger" >{{ error }}</p>
+            {% endfor %}
+            {% endfor %}
+        </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success"> Register
+        </button>
+        <a href="{% url 'blog-home' %}" class="btn btn-default">Cancel</a>
+    </div>
+</center>
+</form>
+{% endblock content %}

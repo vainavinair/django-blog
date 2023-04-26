@@ -1,0 +1,8 @@
+{% extends 'blog_home/base.html' %}
+{% block content %}
+<h2> Yoh have been logged out</h2>
+<div class="container-fluid">
+    <small class="text-muted">Want to visit again? <a href="{% url 'user-login' %}">Click here to Login Again
+        </a></small>
+</div>
+{% endblock content %}
