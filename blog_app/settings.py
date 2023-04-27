@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'blog_home.apps.BlogHomeConfig',
     'users.apps.UsersConfig',
+    'user_profile.apps.UserProfileConfig',
 
     'widget_tweaks',
 ]
