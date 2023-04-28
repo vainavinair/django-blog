@@ -3,6 +3,9 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.conf import settings
+from django.core.mail import send_mail
+
 from user_profile.models import Profile
 from .forms import UserRegisterForm
 
@@ -11,11 +14,15 @@ def register(request):
     if request.method == 'POST':  
         form = UserRegisterForm(request.POST)  
         if form.is_valid():  
+            email=form.cleaned_data.get('email')
             username=form.cleaned_data.get('username')
             user = form.save()
-            profile_obj = Profile.objects.create(user=user, auth_token=str(uuid.uuid4()))
+            token=str(uuid.uuid4())
+            profile_obj = Profile.objects.create(user=user, auth_token=token)
             profile_obj.save()
-            # messages.success(request,f"Account created for {username}!")
+            print(email,token)
+            send_mail_otp(email,token)
+            messages.success(request,f"Account created for {username}!")
             return redirect('user-token')
     else:
         form = UserRegisterForm()
@@ -27,9 +34,9 @@ def success(request):
 def token_send(request):
     return render(request,'users/token.html')
 
-def send_mail(email,token):
+def send_mail_otp(email,token):
     subject = "Email verification"
     message = f'Click this link to verify your account http://localhost:8000/user/verify/{token}'
-    email_form = settings.EMAIL_HOST_USER
+    email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
-    send_mail(subject, message, email_form, recipient_list )
+    send_mail(subject, message, from_email=email_from, recipient_list=recipient_list)
