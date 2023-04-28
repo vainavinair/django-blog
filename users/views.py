@@ -5,9 +5,21 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
+from django.contrib.auth.views import LoginView
 
 from user_profile.models import Profile
 from .forms import UserRegisterForm
+
+class CustomLoginView(LoginView):
+    template_name = 'users/login.html'  # Use your own login template
+
+    def form_valid(self, form):
+        user = form.get_user()
+        profile_obj = Profile.objects.filter(user=user).first()
+        if  profile_obj.is_verified:
+            return super().form_valid(form)
+        messages.error(self.request, 'Your account is not verified yet.')
+        return redirect('user-login')
 
 
 def register(request):
@@ -44,10 +56,15 @@ def send_mail_otp(email,token):
 def verify(request, auth_token):
     try:
         profile_obj = Profile.objects.filter(auth_token=auth_token).first()
-        if profile_obj:
+        if not profile_obj.is_verified:
             profile_obj.is_verified=True
+            profile_obj.save() 
             messages.success(request,f"Account has been verified. Welcome to our blog app {profile_obj.user.username}!")
             return redirect('user-login')
+        else:
+            messages.success(request,f"Account has been verified already")
+            return redirect('user-login')
+
     except:
         return redirect('error-page')
     
