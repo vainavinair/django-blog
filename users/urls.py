@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register, token_send, success
+from .views import register, token_send, success, verify, error_page
 from django.contrib.auth import views as auth_views
 
 
@@ -9,4 +9,6 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(template_name='users/logout.html'), name='user-logout'),
     path('token/',token_send, name='user-token'),
     path('success/',success, name='user-success'),
+    path('verify/<auth_token>',verify, name='verify'),
+    path('error/',error_page, name='error-page'),
 ]

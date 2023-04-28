@@ -40,3 +40,16 @@ def send_mail_otp(email,token):
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, from_email=email_from, recipient_list=recipient_list)
+
+def verify(request, auth_token):
+    try:
+        profile_obj = Profile.objects.filter(auth_token=auth_token).first()
+        if profile_obj:
+            profile_obj.is_verified=True
+            messages.success(request,f"Account has been verified. Welcome to our blog app {profile_obj.user.username}!")
+            return redirect('user-login')
+    except:
+        return redirect('error-page')
+    
+def error_page(request):
+    return render (request, 'error.html')
