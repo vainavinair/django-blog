@@ -2,6 +2,8 @@ from django.urls import path
 from .views import register, token_send, success, verify, error_page, CustomLoginView
 from django.contrib.auth import views as auth_views
 
+from user_profile import views as profile_views
+
 
 urlpatterns = [
     path('register/',register, name='user-register'),
@@ -11,4 +13,5 @@ urlpatterns = [
     path('success/',success, name='user-success'),
     path('verify/<auth_token>',verify, name='verify'),
     path('error/',error_page, name='error-page'),
+     path('profile/<username>/', profile_views.profile, name='user-profile'),
 ]
