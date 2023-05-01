@@ -7,7 +7,9 @@ from .models import Posts
 
 @login_required
 def home(request):
+    posts = Posts.objects.all()
     context = {
-        'Posts' : Posts
+        'Posts' : posts
     }
+    print(context)
     return render(request,"blog_home/home.html",context=context)
