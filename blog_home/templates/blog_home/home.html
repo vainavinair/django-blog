@@ -4,15 +4,22 @@
   <div class="container col-md-6">
     {% for post in Posts %}
     <div class="card m-3">
-      <a href="user/profile/{{post.author}}">
-        <h5 class="card-header">{{post.author}}</h5>
-      </a>
+      <h5 class="card-header d-flex justify-content-between align-items-center">
+        <a href="user/profile/{{post.author}}">{{post.author}}</a>
+        <div class="btn-group ml-auto">
+          {% if post.author.username == request.user.username %}
+          <a href="post/update/{{post.id}}"><button class="btn btn-outline-primary m-2">update</button></a>
+          <a href="post/delete/{{post.id}}"><button class="btn btn-outline-danger m-2">delete</button></a>
+          {% endif %}
+        </div>
+      </h5>
       <div class="card-body">
         <h5 class="card-title">{{post.title}}</h5>
         <p class="card-text">{{post.content}}</p>
         <p class="text-muted">{{post.created_at}}</p>
       </div>
     </div>
+    
     {% endfor %}
   </div>
   <div class="container col-md-6">
@@ -23,9 +30,11 @@
           {% csrf_token %}
           <div class="form-group">
             <label for="post-title">Title:</label>
-            <input type="text" class="form-control" name="post-title" id="post-title" placeholder="Enter title for your post">
+            <input type="text" class="form-control" name="post-title" id="post-title"
+              placeholder="Enter title for your post">
             <label for="post-content">Content:</label>
-            <input type="text" class="form-control" name="post-content" id="post-content" placeholder="Enter content for your post">
+            <input type="text" class="form-control" name="post-content" id="post-content"
+              placeholder="Enter content for your post">
             <button type="submit" class="btn btn-primary m-2">Submit</button>
           </div>
         </form>

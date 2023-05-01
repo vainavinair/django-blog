@@ -21,3 +21,9 @@ def home(request):
         post = Posts(author=author, title=title, content=content)
         post.save()
         return redirect('blog-home')
+    
+def delete_post(request,id):
+    post = Posts.objects.filter(id=id).first()
+    post.delete()
+    return redirect('blog-home')
+    
