@@ -64,9 +64,8 @@ def verify(request, auth_token):
         else:
             messages.success(request,f"Account has been verified already")
             return redirect('user-login')
-
     except:
         return redirect('error-page')
     
 def error_page(request):
-    return render (request, 'error.html')
+    return render (request, 'users/error.html')
