@@ -12,22 +12,14 @@ from .forms import StudentModelForm
 
 @login_required
 def home(request):
-    form = StudentModelForm(request.POST or None)
     if request.method=="GET":
         posts = Posts.objects.all()
         for post in posts:
             print(post.id)
         context = {
             'Posts' : posts,
-            'form' : form
         }
         return render(request,"blog_home/home.html",context=context)
-    elif request.method=="POST":
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-        return redirect('blog-home')
 
 
 def delete_post(request,id):
@@ -40,6 +32,21 @@ def delete_post(request,id):
         messages.info(request,f"You dont have the persmission to delete this post")
         return redirect('blog-home')
     
+@login_required
+def create_post(request):
+    form = StudentModelForm(request.POST or None)
+    context = {
+        'form':form
+    }
+    if request.method=="POST":
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+        return redirect('blog-home')
+    elif request.method=="GET":
+        return render(request,"blog_home/create.html",context=context)
+
 def update_post(request,id):
     post = get_object_or_404(Posts, id=id)
     if request.user == post.author:
