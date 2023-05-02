@@ -15,7 +15,7 @@ from .forms import StudentModelForm
 def home(request):
     # Fetch all posts
     posts = Posts.objects.all()
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 5)
     page_number = request.GET.get('page')
     try:
         page_obj = paginator.get_page(page_number)
