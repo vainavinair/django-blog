@@ -17,6 +17,17 @@
         <h5 class="card-title">{{post.title}}</h5>
         <p class="card-text">{{post.content}}</p>
         <p class="text-muted">{{post.created_at}}</p>
+        <p>
+          <a class="btn " >
+            <img src="https://img.icons8.com/material-outlined/24/null/facebook-like--v1.png"/>
+          </a>
+            <a class="btn btn-primary" data-bs-toggle="collapse" href="#comments" role="button" aria-expanded="false" >
+              Comments
+            </a>
+        </p>
+        <div class="collapse" id="comments">
+          Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+      </div>
       </div>
       </div>
       {% endfor %}
