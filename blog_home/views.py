@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden
+from django.core.paginator import Paginator, EmptyPage
 
 from django.contrib.auth.models import User
 
@@ -12,14 +13,18 @@ from .forms import StudentModelForm
 
 @login_required
 def home(request):
-    if request.method=="GET":
-        posts = Posts.objects.all()
-        for post in posts:
-            print(post.id)
-        context = {
-            'Posts' : posts,
-        }
-        return render(request,"blog_home/home.html",context=context)
+    # Fetch all posts
+    posts = Posts.objects.all()
+    paginator = Paginator(posts, 2)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.get_page(page_number)
+    except EmptyPage:
+        page_obj = paginator.get_page(paginator.num_pages)
+    context = {
+        'page_obj': page_obj,
+    }
+    return render(request, 'blog_home/home.html', context=context)
 
 
 def delete_post(request,id):

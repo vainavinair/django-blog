@@ -1,7 +1,7 @@
 {% extends 'blog_home/base.html' %}
 {% block content %}
   <div class="container col-md-10">
-    {% for post in Posts %}
+    {% for post in page_obj  %}
     <div class="card m-3">
       <h5 class="card-header d-flex justify-content-between align-items-center">
         Author: <a href="user/profile/{{post.author}}"> {{ post.author}}</a>
@@ -18,6 +18,7 @@
         <p class="card-text">{{post.content}}</p>
         <p class="text-muted">{{post.created_at}}</p>
       </div>
-
-    {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
 {% endblock content %}
